@@ -33,9 +33,10 @@ jobs:
         with:
           node-version: '12'
           registry-url: 'https://npm.pkg.github.com'
+          scope: "@wpmedia"
 
       # handles taking in tags with dots in it
       - name: Point new tag to the base tag's version of target package
-        run: npm dist-tag add ${{ env.TARGET_PACKAGE_NAME }}@$(npm view ${{env.TARGET_PACKAGE_NAME}}@${{ env.BASE_TAG }} version) ${{ env.NEW_TAG }} --registry=https://npm.pkg.github.com
+        run: npm dist-tag add ${{ env.TARGET_PACKAGE_NAME }}@$(npm view ${{env.TARGET_PACKAGE_NAME}}@${{ env.BASE_TAG }} version) ${{ env.NEW_TAG }}
         env:
           NODE_AUTH_TOKEN: ${{ inputs.node_auth_token }}
