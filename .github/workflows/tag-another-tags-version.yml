@@ -15,6 +15,10 @@ on:
         description: 'Name of the package in GitHub Package Registry'
         required: true
         type: string
+      node_auth_token:
+        description: 'Access token'
+        required: true
+        type: string
 
 jobs:
   tag_another_tags_version:
@@ -33,3 +37,5 @@ jobs:
       # handles taking in tags with dots in it
       - name: Point new tag to the base tag's version of target package
         run: npm dist-tag add ${{ env.TARGET_PACKAGE_NAME }}@$(npm view ${{env.TARGET_PACKAGE_NAME}}@${{ env.BASE_TAG }} version) ${{ env.NEW_TAG }}
+        env:
+          NODE_AUTH_TOKEN: ${{ inputs.node_auth_token }}
