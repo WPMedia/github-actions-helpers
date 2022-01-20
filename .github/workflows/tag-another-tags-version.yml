@@ -1,0 +1,35 @@
+name: Tag another tag's version
+
+on: 
+  workflow_call:
+    inputs: 
+      base_tag:
+        description: 'Tag pointing to a version you want to point to'
+        required: true
+        type: string
+      new_tag:
+        description: 'Tag that will point to version of the base tag'
+        required: true
+        type: string
+      package_name:
+        description: 'Name of the package in GitHub Package Registry'
+        required: true
+        type: string
+
+jobs:
+  tag_another_tags_version:
+    runs-on: ubuntu-latest
+    env:
+      BASE_TAG: ${{ inputs.base_tag }}
+      NEW_TAG: ${{ inputs.new_tag }}
+      TARGET_PACKAGE_NAME: ${{ inputs.package_name }}
+    steps:
+      - name: Setup Node and npm
+        uses: actions/setup-node@v2
+        with:
+          node-version: '12'
+          registry-url: 'https://npm.pkg.github.com'
+
+      # handles taking in tags with dots in it
+      - name: Point new tag to the base tag's version of target package
+        run: npm dist-tag add ${env.TARGET_PACKAGE_NAME}@$(npm view ${env.TARGET_PACKAGE_NAME}@${{ env.BASE_TAG }} version) ${{ env.NEW_TAG }}
