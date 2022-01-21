@@ -34,6 +34,8 @@ jobs:
           node-version: '12'
           registry-url: 'https://npm.pkg.github.com'
           scope: "@wpmedia"
+      
+      - run: echo "registry=https://npm.pkg.github.com/@wpmedia" >> .npmrc
 
       # handles taking in tags with dots in it
       - name: Point new tag to the base tag's version of target package
